@@ -121,6 +121,7 @@ export const userRouter = router({
         const payload = {
           email: user.email,
           password: user.password,
+          userId:user.id
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET as string);

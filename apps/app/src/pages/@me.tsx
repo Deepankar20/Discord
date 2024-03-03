@@ -8,6 +8,7 @@ import { dialogBox } from "@/atom/dialogboxstate";
 import { dialogObject } from "@/atom/dialogObject";
 import { trpc } from "@/utils/trpc";
 import { toast, ToastContainer } from "react-toastify";
+import DmSidebar from "@/components/dmSidebar";
 
 const home = () => {
   const dialog = useRecoilValue(dialogBox);
@@ -41,7 +42,7 @@ const home = () => {
     <div>
       <div className="flex">
         <ServerSidebar />
-        <ChannelSidebar />
+        <DmSidebar />
 
         <div className="flex flex-col">
           <Navbar />

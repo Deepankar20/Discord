@@ -21,4 +21,26 @@ model User {
   emailVerified Boolean @default(false)
   password String
   image String?
+
+  servers Server[] 
+}
+
+model Server{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name String
+
+  members User[] 
+
+  channels Channel[]
+}
+
+model Channel{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name String
+  type String
+
+  server Server @relation(fields: [serverId], references: [id])
+  serverId Int
 }
