@@ -6,11 +6,14 @@ import React from "react";
 
 const ChannelSidebar = () => {
   const router = useRouter();
-  const serverId = router.query.sId;
+  const serverId = router.query.sid;
   console.log(serverId);
 
   return (
-    <div className="bg-gray-700 h-screen w-56 flex flex-col gap-12 p-3 items-center">
+    <div
+      className="bg-gray-700  w-56 flex flex-col gap-12 p-3 items-center"
+      style={{ height: "100vh" }}
+    >
       <div>
         <h1>
           text channels <button>+</button>

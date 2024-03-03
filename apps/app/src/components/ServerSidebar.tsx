@@ -13,13 +13,7 @@ const ServerSidebar = () => {
   const [servers, setServers] = useState([]);
   const router = useRouter();
   const serverId = router.query.sId;
-  console.log(servers);
 
-  const create = trpc.server.create.useMutation({
-    onSuccess: (data) => {
-      console.log("everything done", localStorage.getItem("token"));
-    },
-  });
 
   const getServers = trpc.server.getServers.useMutation({
     onSuccess: (data) => {
@@ -43,18 +37,22 @@ const ServerSidebar = () => {
   };
 
   return (
-    <div className="bg-gray-800 h-screen w-24">
+    <div className="bg-gray-800 w-24" style={{ height: "40rem" }}>
       <h1
         onClick={() => router.push("/@me")}
         className="p-2 text-xl h-12 w-12 font-semibold bg-blue-500 rounded-full items-center mx-auto my-10 hover:cursor-pointer"
       >
         DM
       </h1>
-      <div className="bg-gray-800 h-screen w-24 flex flex-col gap-12 p-3 items-center">
+      <div
+        className="bg-gray-800 w-24 flex flex-col gap-12 p-3 items-center"
+        style={{ height: "87vh" }}
+      >
         <div className="flex flex-col gap-3 items-center">
           {servers.map((server) => {
             //@ts-ignore
             const isCurrentServer = server.id === router.query.sid;
+            // console.log(server.id, router.query.sid);
 
             return (
               <div

@@ -44,3 +44,11 @@ model Channel{
   server Server @relation(fields: [serverId], references: [id])
   serverId Int
 }
+
+model message{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  from String
+  to String
+  content String
+}

@@ -121,7 +121,7 @@ export const userRouter = router({
         const payload = {
           email: user.email,
           password: user.password,
-          userId:user.id
+          userId: user.id,
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET as string);
@@ -137,6 +137,81 @@ export const userRouter = router({
           code: 501,
           message: "an error occured",
         };
+      }
+    }),
+
+  getAllUsers: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { token } = opts.input;
+
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
+
+      try {
+        if (decodedToken) {
+          const users = await prisma.user.findMany({});
+          //@ts-ignore
+          const allUsers = users.filter((user) => user.id !== decodedToken.id);
+
+          console.log(allUsers);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+
+  searchUsers: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        searchParams: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { token, searchParams } = opts.input;
+
+      if(!searchParams){
+        return{
+          code:403,
+          data:null
+        }
+      }
+
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
+
+      try {
+        if (decodedToken) {
+          const users = await prisma.user.findMany({
+            where: {
+              username: {
+                contains: searchParams,
+              },
+            },
+          });
+
+          if(!users){
+            return{
+              code:400,
+              data:null
+            }
+          }
+
+          //@ts-ignore
+          const allUsers = users.filter((user) => user.id !== decodedToken.id);
+
+          console.log(allUsers);
+
+          return{
+            code:201,
+            data:allUsers,
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
     }),
 });
