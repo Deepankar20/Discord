@@ -1,4 +1,9 @@
 import { Server } from "socket.io";
+interface Imsg {
+  from: string;
+  to: string;
+  content: string;
+}
 
 class SocketService {
   private _io: Server;
@@ -14,8 +19,6 @@ class SocketService {
     });
   }
 
-  
-
   public initListeners() {
     console.log("init socket listeners...");
     let users = {};
@@ -26,12 +29,9 @@ class SocketService {
       //@ts-ignore
       users[token] = socket.id;
       console.log(users);
-      
 
-      
-
-      socket.on("event:message", async ({ message }: { message: string }) => {
-        console.log(`New Message Recieved : ${message}`);
+      socket.on("event:message", async (msg: Imsg) => {
+        console.log(`New Message Recieved : ${msg}`);
       });
     });
   }
