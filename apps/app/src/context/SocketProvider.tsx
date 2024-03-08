@@ -15,7 +15,7 @@ interface Imsg {
 
 interface ISocketContext {
   sendMessage: (msg: Imsg) => any;
-  messages:any
+  messages: any;
 }
 
 const SocketContext = React.createContext<ISocketContext | null>(null);
@@ -38,6 +38,7 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       if (socket) {
         console.log("hi");
+        setMessages((prev) => [...prev, msg]);
 
         socket.emit("event:message", msg);
       }

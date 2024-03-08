@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 const ChatSection = () => {
   const currChat = useRecoilValue(currentChat);
-  const [_chat, setChat] = useRecoilState(chat);
+
   const [fromEmail, setFromEmail] = useState<string>();
   const [value, setValue] = useState<string>();
 
@@ -30,36 +30,37 @@ const ChatSection = () => {
   const handleChange = (e: any) => {
     const content = e.target.value;
     setValue(content);
-    setMessage({ from: "", to: currChat, content });
+
+    const from = jwt.decode(localStorage.getItem("token") as string)?.email;
+    setFromEmail(from);
+    setMessage({ from, to: currChat, content });
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setValue("");
     //@ts-ignore
-    setChat((prev) => [...prev, message]);
     sendMessage(message);
   };
-
-  useEffect(() => {
-    //@ts-ignore
-    setChat([..._chat, ...messages]);
-  }, []);
 
   // setMessages([{from:"deep1", to:"deep2", content:"hello"}])
   return (
     <div>
       <div
         className="flex flex-col gap-2 max-h-screen
-       overflow-y-auto"
+       overflow-y-auto p-2"
       >
-        {_chat.map((msg: Imsg) => {
+        {messages.map((msg: Imsg) => {
           return (
-            <div
-              className={`text-white bg-blue-700 w-fit p-4 pb-0 pt-0 rounded-lg`}
-            >
-              {msg.content}
-            </div>
+            ((msg.to === currChat && msg.from === fromEmail) ||
+              (msg.to === fromEmail && msg.from === currChat)) && (
+              <div
+                className={`text-white bg-blue-700 w-fit p-5 pb-1 pt-1 rounded-l-none rounded-tl-lg rounded-lg rounded-br-lg rounded-r-none`}
+                style={{ marginLeft: `${msg.from === fromEmail ? "76vw":""}` }}
+              >
+                {msg.content}
+              </div>
+            )
           );
         })}
       </div>
