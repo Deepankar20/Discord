@@ -23,7 +23,7 @@ const Navbar = () => {
     },
   });
 
-  const createDM = (user) => {
+  const createDM = (user: any) => {
     setUsers([]);
     //@ts-ignore
     setCreatedm((prev) => [...prev, user]);
@@ -60,7 +60,7 @@ const Navbar = () => {
               //@ts-ignore
 
               key={user.id}
-              className="bg-slate-700 w-48 p-2 border border-white hover:bg-slate-600 hover:cursor-pointer"
+              className="fixed bg-opacity-50 flex justify-center items-center bg-slate-700 w-48 p-2 border border-white hover:bg-slate-600 hover:cursor-pointer"
               onClick={() => createDM(user)}
             >
               {

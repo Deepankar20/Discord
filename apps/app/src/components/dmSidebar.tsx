@@ -17,7 +17,7 @@ const DmSidebar = () => {
     setCurrChat(user.email);
   };
   // console.log(serverId);
-
+  
   return (
     <div
       className="bg-slate-700 w-64 flex flex-col gap-12 p-3 items-center"
@@ -32,7 +32,8 @@ const DmSidebar = () => {
         return (
           <div
             onClick={() => handleClick(user)}
-            className="bg-slate-500 w-60 h-12 -my-3 p-3 hover:bg-slate-400 hover:cursor-pointer items-center justify-center rounded-md border-b-2 border-slate-900"
+            //@ts-ignore
+            className={` ${currChat === user.email ? "bg-slate-800" : "bg-slate-500"} w-60 h-12 -my-3 p-3 hover:bg-slate-400 hover:cursor-pointer items-center justify-center rounded-md border-b-2 border-slate-900`}
             //@ts-ignore
             key={user.id}
           >

@@ -15,6 +15,7 @@ interface Imsg {
 
 interface ISocketContext {
   sendMessage: (msg: Imsg) => any;
+  messages:any
 }
 
 const SocketContext = React.createContext<ISocketContext | null>(null);
@@ -28,16 +29,24 @@ export const useSocket = () => {
 
 const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>();
+  const [messages, setMessages] = useState<Imsg[]>([]);
 
-  const sendMessage: ISocketContext["sendMessage"] = useCallback((msg) => {
-    console.log("Send Message", msg);
-    console.log(socket?.id);
+  const sendMessage: ISocketContext["sendMessage"] = useCallback(
+    (msg) => {
+      console.log("Send Message", msg);
+      console.log(socket?.id);
 
-    if (socket) {
-      console.log("hi");
+      if (socket) {
+        console.log("hi");
 
-      socket.emit("event:message", msg);
-    }
+        socket.emit("event:message", msg);
+      }
+    },
+    [socket]
+  );
+
+  const onMessageReply = useCallback((msg: Imsg) => {
+    setMessages((prev) => [...prev, msg]);
   }, []);
 
   useEffect(() => {
@@ -49,22 +58,21 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       },
     });
 
-    
-    _socket.on("connect", () => {
-      console.log("Socket connected, ID:", _socket.id);
-    });
     console.log("socket object : ", _socket);
+
+    _socket.on("event:message:reply", onMessageReply);
 
     setSocket((prev) => _socket);
 
     return () => {
+      _socket.off("event:message:reply", onMessageReply);
       _socket.disconnect();
       setSocket(undefined);
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={{ sendMessage }}>
+    <SocketContext.Provider value={{ sendMessage, messages }}>
       {children}
     </SocketContext.Provider>
   );

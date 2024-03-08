@@ -31,7 +31,14 @@ class SocketService {
       console.log(users);
 
       socket.on("event:message", async (msg: Imsg) => {
-        console.log(`New Message Recieved : ${msg}`);
+        console.log(`New Message Recieved : ${JSON.stringify(msg)}`);
+
+        const { from, to, content } = msg;
+
+        //@ts-ignore
+        const socketId = users[to];
+        console.log(socketId);
+        io.to(socketId).emit("event:message:reply", msg);
       });
     });
   }
