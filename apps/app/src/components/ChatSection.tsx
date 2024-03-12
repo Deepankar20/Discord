@@ -31,6 +31,7 @@ const ChatSection = () => {
     const content = e.target.value;
     setValue(content);
 
+    //@ts-ignore
     const from = jwt.decode(localStorage.getItem("token") as string)?.email;
     setFromEmail(from);
     setMessage({ from, to: currChat, content });
@@ -54,11 +55,15 @@ const ChatSection = () => {
           return (
             ((msg.to === currChat && msg.from === fromEmail) ||
               (msg.to === fromEmail && msg.from === currChat)) && (
-              <div
-                className={`text-white bg-blue-700 w-fit p-5 pb-1 pt-1 rounded-l-none rounded-tl-lg rounded-lg rounded-br-lg rounded-r-none`}
-                style={{ marginLeft: `${msg.from === fromEmail ? "76vw":""}` }}
-              >
-                {msg.content}
+              <div className="flex gap-2 items-end">
+                <div className="bg-gray-500 rounded-full h-6 w-6 text-center">
+                  {msg.from[0]}
+                </div>
+                <div
+                  className={`${msg.from === fromEmail ? "text-white bg-blue-700" : "text-black bg-white"}  w-fit p-5 pb-1 pt-1 rounded-l-none rounded-tl-lg rounded-lg rounded-br-lg rounded-r-none`}
+                >
+                  {msg.content}
+                </div>
               </div>
             )
           );
