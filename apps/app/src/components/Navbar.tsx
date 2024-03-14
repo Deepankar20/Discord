@@ -65,7 +65,6 @@ const Navbar = () => {
             >
               {
                 //@ts-ignore
-
                 user.username
               }
             </div>

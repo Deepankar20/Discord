@@ -12,8 +12,7 @@ const ServerSidebar = () => {
   const [dialog, setDialog] = useRecoilState(dialogBox);
   const [servers, setServers] = useState([]);
   const router = useRouter();
-  const serverId = router.query.sId;
-
+  const serverId = router.query.sid;
 
   const getServers = trpc.server.getServers.useMutation({
     onSuccess: (data) => {
@@ -51,26 +50,29 @@ const ServerSidebar = () => {
         <div className="flex flex-col gap-3 items-center">
           {servers.map((server) => {
             //@ts-ignore
-            const isCurrentServer = server.id === router.query.sid;
             // console.log(server.id, router.query.sid);
 
             return (
-              <div
-                //@ts-ignore
-                key={server.id}
-                className={`p-2 text-2xl h-12 w-12 font-bold ${
-                  isCurrentServer ? "bg-yellow-500" : "bg-gray-500"
-                } rounded-full text-center hover:cursor-pointer hover:rounded-xl hover:bg-blue-500`}
-                onClick={() => {
+              server.name && (
+                <div
                   //@ts-ignore
-                  router.push(`/home?sid=${server.id}`);
-                }}
-              >
-                {
-                  //@ts-ignore
-                  server.name[0]
-                }
-              </div>
+                  key={server.id}
+                  className={`p-2 text-xl h-12 w-12 font-bold ${
+                    server.id === router.query.sid
+                      ? "bg-yellow-500"
+                      : "bg-gray-900"
+                  } rounded-full text-center hover:cursor-pointer hover:rounded-xl hover:bg-blue-500`}
+                  onClick={() => {
+                    //@ts-ignore
+                    router.push(`/home?sid=${server.id}`);
+                  }}
+                >
+                  {
+                    //@ts-ignore
+                    server.name[0]
+                  }
+                </div>
+              )
             );
           })}
         </div>

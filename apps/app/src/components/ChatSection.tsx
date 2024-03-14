@@ -1,6 +1,6 @@
 import { currentChat } from "@/atom/currentChat";
 import { useSocket } from "@/context/SocketProvider";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chat } from "@/atom/chat";
 
@@ -8,6 +8,8 @@ import jwt from "jsonwebtoken";
 
 const ChatSection = () => {
   const currChat = useRecoilValue(currentChat);
+
+  const ref = useRef(null);
 
   const [fromEmail, setFromEmail] = useState<string>();
   const [value, setValue] = useState<string>();
@@ -39,6 +41,8 @@ const ChatSection = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    //@ts-ignore
+    ref.current.scrollTop = 100;
     setValue("");
     //@ts-ignore
     sendMessage(message);
@@ -48,8 +52,9 @@ const ChatSection = () => {
   return (
     <div>
       <div
+        ref={ref}
         className="flex flex-col gap-2 max-h-screen
-       overflow-y-auto p-2"
+       overflow-y-auto p-2 h-5/6"
       >
         {messages.map((msg: Imsg) => {
           return (
