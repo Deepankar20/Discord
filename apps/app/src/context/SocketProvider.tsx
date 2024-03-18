@@ -15,6 +15,7 @@ interface Imsg {
 
 interface ISocketContext {
   sendMessage: (msg: Imsg) => any;
+  sendMessageChannel: (msg: Imsg) => any;
   messages: any;
 }
 
@@ -41,6 +42,20 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         setMessages((prev) => [...prev, msg]);
 
         socket.emit("event:message", msg);
+      }
+    },
+    [socket]
+  );
+
+  // const joinRoom : ISocketContext["joinroom"]
+
+  const sendMessageChannel: ISocketContext["sendMessageChannel"] = useCallback(
+    (msg) => {
+      console.log("message sent to channel : ", msg);
+      console.log(socket);
+
+      if (socket) {
+        socket.emit("event:message:channel", msg);
       }
     },
     [socket]
@@ -73,7 +88,9 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ sendMessage, messages }}>
+    <SocketContext.Provider
+      value={{ sendMessage, messages, sendMessageChannel }}
+    >
       {children}
     </SocketContext.Provider>
   );

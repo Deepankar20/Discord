@@ -12,7 +12,10 @@ const ServerSidebar = () => {
   const [dialog, setDialog] = useRecoilState(dialogBox);
   const [servers, setServers] = useState([]);
   const router = useRouter();
-  const serverId = router.query.sid;
+  const [serverId, setServerId] = useState<string>();
+
+  const {sid} = router.query;
+
 
   const getServers = trpc.server.getServers.useMutation({
     onSuccess: (data) => {
@@ -57,11 +60,12 @@ const ServerSidebar = () => {
                 <div
                   //@ts-ignore
                   key={server.id}
-                  className={`p-2 text-xl h-12 w-12 font-bold ${
+                  className={`${
                     server.id === router.query.sid
                       ? "bg-yellow-500"
                       : "bg-gray-900"
-                  } rounded-full text-center hover:cursor-pointer hover:rounded-xl hover:bg-blue-500`}
+                  }  p-2 text-xl h-12 w-12 font-bold rounded-full text-center hover:cursor-pointer hover:rounded-xl hover:bg-blue-500`}
+
                   onClick={() => {
                     //@ts-ignore
                     router.push(`/home?sid=${server.id}`);

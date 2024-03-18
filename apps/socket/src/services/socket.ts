@@ -40,6 +40,11 @@ class SocketService {
         console.log(socketId);
         io.to(socketId).emit("event:message:reply", msg);
       });
+
+      socket.on("event:message:channel", async(msg)=>{
+        console.log(JSON.stringify(msg));
+        
+      })
     });
   }
 

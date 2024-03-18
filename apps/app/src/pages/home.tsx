@@ -8,6 +8,8 @@ import { dialogBox } from "@/atom/dialogboxstate";
 import { dialogObject } from "@/atom/dialogObject";
 import { trpc } from "@/utils/trpc";
 import { toast, ToastContainer } from "react-toastify";
+import GroupChatSection from "@/components/groupChatSection";
+
 
 const home = () => {
   const dialog = useRecoilValue(dialogBox);
@@ -45,7 +47,7 @@ const home = () => {
 
         <div className="flex flex-col">
           <Navbar />
-          <ChatSection />
+          <GroupChatSection/>
           {dialog && (
             <div>
               <form
